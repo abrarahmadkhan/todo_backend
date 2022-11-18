@@ -18,6 +18,14 @@ export class ListController {
   async getAll(): Promise<List[]> {
     return await this.listService.findAll();
   }
+  @Post()
+  async getAllDataByPageAndRows(
+    @Body('page') page,
+    @Body('rows') rows,
+    @Body('Status') Status,
+  ): Promise<any> {
+    return await this.listService.findAllDataByPageAndRows(page, rows, Status);
+  }
   @Get(':id')
   @HttpCode(200)
   getEmployee(@Param('id') id) {

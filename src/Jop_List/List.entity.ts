@@ -19,7 +19,7 @@ export class List {
     type: 'enum',
     enum: listEnum,
   })
-  public Status: listEnum;
+  public Status: string;
 
   @Column()
   Job_Title: string;

@@ -12,6 +12,86 @@ export class ListService {
   findAll(): Promise<List[]> {
     return this.listRepo.find();
   }
+  async findAllDataByPageAndRows(
+    page: number,
+    rows: number,
+    status: string,
+  ): Promise<any> {
+    try {
+      const Page = page * rows;
+      if (status.length == 0) {
+        const response = await this.listRepo.findAndCount({
+          // where: [{ Status: status[0] }],
+          take: rows,
+          skip: Page,
+        });
+
+        return response;
+      }
+      if (status.length == 1) {
+        const response = await this.listRepo.findAndCount({
+          where: [{ Status: status[0] }],
+          take: rows,
+          skip: Page,
+        });
+
+        return response;
+      }
+      if (status.length == 2) {
+        const response = await this.listRepo.findAndCount({
+          where: [{ Status: status[0] }, { Status: status[1] }],
+          take: rows,
+          skip: Page,
+        });
+
+        return response;
+      }
+      if (status.length == 3) {
+        const response = await this.listRepo.findAndCount({
+          where: [
+            { Status: status[0] },
+            { Status: status[1] },
+            { Status: status[2] },
+          ],
+          take: rows,
+          skip: Page,
+        });
+
+        return response;
+      }
+      if (status.length == 4) {
+        const response = await this.listRepo.findAndCount({
+          where: [
+            { Status: status[0] },
+            { Status: status[1] },
+            { Status: status[2] },
+            { Status: status[3] },
+          ],
+          take: rows,
+          skip: Page,
+        });
+
+        return response;
+      }
+      if (status.length == 5) {
+        const response = await this.listRepo.findAndCount({
+          where: [
+            { Status: status[0] },
+            { Status: status[1] },
+            { Status: status[2] },
+            { Status: status[3] },
+            { Status: status[4] },
+          ],
+          take: rows,
+          skip: Page,
+        });
+
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async create(newList): Promise<List> {
     const { Status, Job_Title, Description, employeeListId }: List = newList;
     const list = new List();

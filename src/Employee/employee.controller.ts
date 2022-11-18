@@ -21,7 +21,7 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Get()
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @HttpCode(200)
   async getAll(): Promise<Employee[]> {
     return await this.employeeService.findAll();
