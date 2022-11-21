@@ -21,6 +21,17 @@ export class EmployeeService {
   findAll(): Promise<Employee[]> {
     return this.employeeRepo.find();
   }
+  async findAllDataByPageAndRows(
+    page: number,
+    rows: number,
+  ): Promise<any> {
+    const Page = page * rows;
+    const response = await this.employeeRepo.findAndCount({
+      take: rows,
+      skip: Page,
+    });
+    return response;
+  }
 
   async create(newEmployee): Promise<Employee> {
     const employee = new Employee();

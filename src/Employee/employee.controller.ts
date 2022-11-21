@@ -8,10 +8,10 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
-import { EmployeeGuard } from 'src/Auth/Guards/login_Employee.guard';
-import { AdminGuard } from 'src/Auth/Guards/test.guard';
+// import { EmployeeGuard } from 'src/Auth/Guards/login_Employee.guard';
+// import { AdminGuard } from 'src/Auth/Guards/test.guard';
 import { Employee } from './employee.entity';
 import { EmployeeService } from './employee.service';
 import { EmployeeDto } from './EmployeeDto/employee.dto';
@@ -27,8 +27,16 @@ export class EmployeeController {
     return await this.employeeService.findAll();
   }
 
+  @Post()
+  async getAllDataByPageAndRows(
+    @Body('page') page,
+    @Body('rows') rows,
+  ): Promise<any> {
+    return await this.employeeService.findAllDataByPageAndRows(page, rows);
+  }
+
   @Get(':id')
-  @UseGuards(EmployeeGuard)
+  // @UseGuards(EmployeeGuard)
   @HttpCode(200)
   getEmployee(@Param('id') id) {
     console.log('passed');
@@ -71,7 +79,7 @@ export class EmployeeController {
     }
   }
   @Post(':id')
-  @UseGuards(EmployeeGuard)
+  // @UseGuards(EmployeeGuard)
   @HttpCode(200)
   updateEmployee(@Body() employeeToUpdate: EmployeeDto) {
     try {
@@ -81,7 +89,7 @@ export class EmployeeController {
     }
   }
   @Delete(':id')
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @HttpCode(200)
   deleteEmployee(@Param('id') id) {
     try {
