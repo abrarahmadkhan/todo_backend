@@ -21,10 +21,7 @@ export class EmployeeService {
   findAll(): Promise<Employee[]> {
     return this.employeeRepo.find();
   }
-  async findAllDataByPageAndRows(
-    page: number,
-    rows: number,
-  ): Promise<any> {
+  async findAllDataByPageAndRows(page: number, rows: number): Promise<any> {
     const Page = page * rows;
     const response = await this.employeeRepo.findAndCount({
       take: rows,
@@ -58,7 +55,91 @@ export class EmployeeService {
         where: { employee_id: employee_id },
         relations: ['List'],
       });
-      return JobList;
+      return JobList[0].List;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async findEmployeeJobListByRawAndPage(
+    employee_id: number,
+    rows: number,
+    page: number,
+    status: string,
+  ) {
+    try {
+      const Page = page * rows;
+      const Rows = rows * (page + 1);
+      const JobList = await this.employeeRepo.find({
+        where: { employee_id: employee_id },
+        relations: ['List'],
+      });
+      if (status.length == 0) {
+        const count = JobList[0].List.length;
+        const data = JobList[0].List.slice(Page, Rows);
+        const response = [data, count];
+        return response;
+      }
+      if (status.length == 1) {
+        const filtered = JobList[0].List.filter((obj) => {
+          return obj.Status === status[0];
+        });
+        const count = filtered.length;
+        const data = filtered.slice(Page, Rows);
+        const response = [data, count];
+        return response;
+      }
+      if (status.length == 2) {
+        const filtered = JobList[0].List.filter((obj) => {
+          return obj.Status === status[1] || obj.Status === status[0];
+        });
+        const count = filtered.length;
+        const data = filtered.slice(Page, Rows);
+        const response = [data, count];
+        return response;
+      }
+      if (status.length == 3) {
+        const filtered = JobList[0].List.filter((obj) => {
+          return (
+            obj.Status === status[2] ||
+            obj.Status === status[1] ||
+            obj.Status === status[0]
+          );
+        });
+        const count = filtered.length;
+        const data = filtered.slice(Page, Rows);
+        const response = [data, count];
+        return response;
+      }
+      if (status.length == 4) {
+        const filtered = JobList[0].List.filter((obj) => {
+          return (
+            obj.Status === status[2] ||
+            obj.Status === status[3] ||
+            obj.Status === status[1] ||
+            obj.Status === status[0]
+          );
+        });
+        const count = filtered.length;
+        const data = filtered.slice(Page, Rows);
+        const response = [data, count];
+        return response;
+      }
+      if (status.length == 5) {
+        const filtered = JobList[0].List.filter((obj) => {
+          return (
+            obj.Status === status[4] ||
+            obj.Status === status[2] ||
+            obj.Status === status[3] ||
+            obj.Status === status[1] ||
+            obj.Status === status[0]
+          );
+        });
+        const count = filtered.length;
+        const data = filtered.slice(Page, Rows);
+        const response = [data, count];
+        return response;
+      }
     } catch (e) {
       console.log(e);
     }

@@ -4,11 +4,6 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  // @Get('')
-  // async getAuthSession(@Session() session: Record<string, any>) {
-  //   console.log(session);
-  //   console.log(session.id);
-  // }
 
   @Post('login')
   async login(@Body() req): Promise<any> {

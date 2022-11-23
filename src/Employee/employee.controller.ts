@@ -8,13 +8,12 @@ import {
   Param,
   Post,
   Put,
-  // UseGuards,
 } from '@nestjs/common';
-// import { EmployeeGuard } from 'src/Auth/Guards/login_Employee.guard';
-// import { AdminGuard } from 'src/Auth/Guards/test.guard';
+import { NodeMail } from 'src/NodeMailer/NodeMailer';
 import { Employee } from './employee.entity';
 import { EmployeeService } from './employee.service';
 import { EmployeeDto } from './EmployeeDto/employee.dto';
+// import * as nodemailer from 'nodemailer';
 
 @Controller('employee')
 export class EmployeeController {
@@ -40,7 +39,6 @@ export class EmployeeController {
   @HttpCode(200)
   getEmployee(@Param('id') id) {
     console.log('passed');
-
     try {
       return this.employeeService.findEmployee(id);
     } catch (e) {
@@ -53,9 +51,30 @@ export class EmployeeController {
   @HttpCode(200)
   getEmployeeJobList(@Param('id') id) {
     console.log('passed');
-
     try {
       return this.employeeService.findEmployeeJobList(id);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  @Post('job/:id')
+  // @UseGuards(EmployeeGuard)
+  @HttpCode(200)
+  EmployeeJobListByRawAndPage(
+    @Param('id') id,
+    @Body('rows') rows,
+    @Body('page') page,
+    @Body('Status') status,
+  ) {
+    console.log('passed');
+    try {
+      return this.employeeService.findEmployeeJobListByRawAndPage(
+        id,
+        rows,
+        page,
+        status,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -72,6 +91,7 @@ export class EmployeeController {
       if (usernameB !== null) {
         return new NotAcceptableException('User Name already Exist');
       } else {
+        NodeMail();
         return this.employeeService.create(newEmployee);
       }
     } catch (e) {
